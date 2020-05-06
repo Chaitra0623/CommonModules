@@ -15,7 +15,7 @@ public class ForgotPasswordController {
 	@Autowired
 	private ForgotPasswordServiceImpl forgotPasswordServiceImpl;
 	public ForgotPasswordController() {
-		System.out.println("created " + this.getClass().getSimpleName());
+		System.out.println("Created " + this.getClass().getSimpleName());
 	}
 	@RequestMapping("/Forgot.do")
 	public String ForgotPasswordCont(ForgotPasswordDTO forgotPasswordDTO,ModelMap map) { 
