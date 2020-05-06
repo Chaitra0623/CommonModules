@@ -52,9 +52,12 @@ body {
 						class="form-control" id="password" placeholder="Enter password"
 						name="password" required>
  				</div>
+ 				
 				
 				</div>
 
+			<text onclick="window.location.href = 'ForgotPassword.jsp';">ForgotPassword</text>
+			
 
 
 				<button type="submit" class="btn btn-default">Login</button>

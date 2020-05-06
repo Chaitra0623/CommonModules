@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.xworkz.register.dao.LoginDAO;
 import com.xworkz.register.dto.LoginDTO;
 import com.xworkz.register.entity.RegisterEntity;
+import com.xworkz.register.password.EncryptDecript;
 
 @Component
 public class LoginServiceImpl implements LoginService {
@@ -20,9 +21,12 @@ public class LoginServiceImpl implements LoginService {
 			System.out.println("invoking validateandLogin method - login service");
 			try {
 				RegisterEntity registerEntity = loginDAO.feachbyemail(loginDTO.getEmail());
-				int attemptCount = loginDAO.feachAttempt(loginDTO.getEmail());
-				Integer count = loginDAO.validLoginUser(loginDTO.getEmail(), loginDTO.getPassword());
-				if (count == 1 && attemptCount <= 2) {
+				int attemptCount = loginDAO.feachAttempt(registerEntity.getEmail());
+				Integer count = loginDAO.validLoginUser(registerEntity.getEmail(),registerEntity.getPassword());
+				String decrypted = EncryptDecript.decrypt(registerEntity.getPassword());
+				System.out.println(decrypted+"this is encryptpassword");
+				//registerEntity.setPassword(encryptPassword);
+				if (count == 1 && attemptCount <= 2 && decrypted.equals(loginDTO.getPassword())) {
 					loginDAO.updateAttempt(loginDTO.getEmail(), 0);
 					return "loginSuccessfull";
 				} else if (registerEntity != null && attemptCount <= 2) {

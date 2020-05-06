@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.xworkz.register.dto.RegisterDTO;
 import com.xworkz.register.exceptions.ControllerException;
+import com.xworkz.register.password.EncryptDecript;
 import com.xworkz.register.service.RegisterServiceImpl;
 
 @Component
@@ -35,9 +36,9 @@ public class RegisterController {
 
 			if (registerDTO.getAgree().equals("Agree")) {
 				boolean valid = this.registerServiceImpl.validateandsave(registerDTO);
-
+				String NormalPassword=EncryptDecript.decrypt(registerDTO.getPassword());
 				if (valid) {
-					map.addAttribute("msg", "it is success to save \n password is"+registerDTO.getPassword());
+					map.addAttribute("msg", "it is success to save \n password is"+NormalPassword);
 				} else {
 					map.addAttribute("msg", " userId  and email already save in form ");
 				}

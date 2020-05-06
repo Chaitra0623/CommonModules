@@ -10,7 +10,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-//select registeren0_.NOOFATTEMPT as col_0_0_ from Register_details registeren0_ where registeren0_.EMAIL=?
 @Entity
 @Table(name = "Register_details")
 @NamedQueries({
@@ -19,8 +18,9 @@ import org.hibernate.annotations.GenericGenerator;
 		@NamedQuery(name = "fetchbypassword", query = "select sign from RegisterEntity sign where sign.password=:password  "),
 		@NamedQuery(name = "countbyemailpassword", query = "SELECT COUNT(email )FROM RegisterEntity  sign WHERE sign.email=:email and sign.password=:password "),
 		@NamedQuery(name = "countbyemail", query = "SELECT sign.noOfAttempt FROM RegisterEntity sign where sign.email=:email"),
-		@NamedQuery(name = "incCountbyemail", query = "update RegisterEntity sign set sign.noOfAttempt=:noOfAttempt  where sign.email=:email") })
-		//@NamedQuery(name = "countbyemail", query = "SELECT sing email from RegisterEntity  sign WHERE sign.email=:email") })
+		@NamedQuery(name = "incCountbyemail", query = "update RegisterEntity sign set sign.noOfAttempt=:noOfAttempt  where sign.email=:email"),
+		@NamedQuery(name = "updateForgotPassword", query = "update RegisterEntity sign set sign.password=:password,sign.noOfAttempt=:nao where sign.email=:email") })
+
 
 public class RegisterEntity implements Serializable {
 	@Id

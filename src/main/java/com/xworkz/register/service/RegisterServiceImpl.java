@@ -12,6 +12,7 @@ import com.xworkz.register.dao.RegisterDAO;
 import com.xworkz.register.dto.RegisterDTO;
 import com.xworkz.register.entity.RegisterEntity;
 import com.xworkz.register.exceptions.ServiceException;
+import com.xworkz.register.password.EncryptDecript;
 
 @Component
 public class RegisterServiceImpl implements RegisterService {
@@ -65,7 +66,7 @@ public class RegisterServiceImpl implements RegisterService {
 					return valid;
 				}
 				String agree = registerDTO.getAgree();
-				if (agree != null && !agree.isEmpty() && agree.equals("Agree") ) {
+				if (agree != null && !agree.isEmpty() && agree.equals("Agree")) {
 					System.out.println("user as agreed");
 					valid = true;
 				} else {
@@ -73,22 +74,25 @@ public class RegisterServiceImpl implements RegisterService {
 					valid = false;
 					return valid;
 				}
-				
-				
+
 			}
-		
-			if (valid ) {
+
+			if (valid) {
 				System.out.println("Data is valid ,will convert  to entity");
 
 				RegisterEntity registerEntity = new RegisterEntity();
 
 				BeanUtils.copyProperties(registerDTO, registerEntity);
 				RegisterEntity registerEntity1 = registerDAO.fetchbyuserId(registerDTO.getUserId());
-				RegisterEntity registerEntity2 =registerDAO.feachbyemail(registerDTO.getEmail());
-				if (registerEntity1 == null && registerEntity2==null) {
+				RegisterEntity registerEntity2 = registerDAO.feachbyemail(registerDTO.getEmail());
+				if (registerEntity1 == null && registerEntity2 == null) {
 					System.out.println("entity is ready \t " + registerEntity);
-					String randomPassword = RandomStringUtils.randomAlphanumeric(5);
-					registerEntity.setPassword(randomPassword);
+					String randomPassword = RandomStringUtils.randomAlphanumeric(8);
+					System.out.println(randomPassword+"this is random password");
+					 String encryptPassword=EncryptDecript.encrypt(randomPassword);
+						System.out.println(randomPassword+"this is randomPassword");
+
+					registerEntity.setPassword(encryptPassword);
 					registerDAO.save(registerEntity);
 					BeanUtils.copyProperties(registerEntity, registerDTO);
 					System.out.println("entity is saved");
@@ -98,8 +102,8 @@ public class RegisterServiceImpl implements RegisterService {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();	
-}
+			e.printStackTrace();
+		}
 		return valid;
 
 	}
